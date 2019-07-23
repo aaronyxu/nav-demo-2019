@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>My Navigation Website</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+    <head></head>
+    <main>
+        <div class="wrapper" id="mainX"></div>
+    </main>
+    <footer></footer>
+    <script>
+        // 1. 初始化数据
+        var hashA = init()
+        var keys = hashA.keys
+        var hash = hashA.hash
+
+        // 2. 生成键盘
+        // 遍历 keys，生成kbd标签
+        generateKeyborad(keys, hash)
+
+        // 3. 监听用户动作
+        listenToUser(hash)
+
+
+
+
+        // 工具函数
+        function getFromLocalStorage(name) {
+            return JSON.parse(localStorage.getItem(name) || 'null')
+        }
+        function tag(tagName) {
+            return document.createElement(tagName)
+        }
+
+        function tag2(tagName, attributes) {
+            var element = document.createElement(tagName)
+            for (var key in attributes) {
+                element[key] = attributes[key]
+            }
+            return element
+        }
+
+        function createSpan(textContent) {
+            var spanX = tag('span')
+            spanX.textContent = textContent
+            spanX.className = 'text'
+            return spanX
+        }
+
+        function createButton(id) {
+            var buttonX = tag('button')
+            buttonX.textContent = 'E'
+            buttonX.id = id
+            buttonX.onclick = function (clickX) {
+                var buttonXX = clickX.target
+                var img2 = buttonXX.previousSibling
+                var keyX = buttonXX.id
+                var newWebsite = prompt('Please enter the website address:')
+                hash[keyX] = newWebsite
+                img2.src = 'http://' + newWebsite + '/favicon.ico'
+                img2.onerror = function (errorX) {
+                    errorX.target.src = './img/point.png'
+                }
+                localStorage.setItem('newHash', JSON.stringify(hash))
+            }
+            return buttonX
+        }
+
+        function createImage(domain) {
+            var imgX = tag('img')
+            if (domain) {
+                imgX.src = 'http://' + domain + '/favicon.ico'
+            } else {
+                imgX.src = './img/point.png'
+            }
+            imgX.onerror = function (errorX) {
+                errorX.target.src = './img/point2.png'
+            }
+            return imgX
+        }
+
+        function init() {
+            var keys = {
+                0: ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
+                // {0:'q',1:'w',2:'e',3:'r',4:'t',5:'y',6:'u',7:'i',8:'o',9:'p',length:10}
+                1: ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'],
+                2: ['z', 'x', 'c', 'v', 'b', 'n', 'm'],
+                length: 3
+            }
+            var hash = {
+                q: 'qq.com',
+                w: 'weibo.com',
+                y: 'youtube.com',
+                f: 'facebook.com',
+                g: 'google.com',
+                z: 'zhihu.com',
+                t: 'taobao.com',
+                x: 'xunlei.com',
+                b: 'baidu.com',
+                a: 'amazon.com',
+                i: 'iqiyi.com'
+            }
+            // 取出LocalStorage 中的 newHash 对应的 hash
+            var hashInLocalStorage = getFromLocalStorage('newHash')
+            if (hashInLocalStorage) {
+                hash = hashInLocalStorage
+            }
+            return {
+                'keys': keys,
+                'hash': hash
+            }
+        }
+
+        function generateKeyborad(keys, hash) {
+            for (var index = 0; index < keys['length']; index = index + 1) {
+                var divX = tag('div')
+                divX.className = 'row'
+
+                mainX.appendChild(divX)
+
+                var row = keys[index]   // 第一个数组， 第二个数组， 第三个数组
+                for (var index2 = 0; index2 < row['length']; index2 = index2 + 1) {
+                    var spanX = createSpan(row[index2])
+
+                    var buttonX = createButton(row[index2])
+
+                    var imgX = createImage(hash[row[index2]])
+
+                    var kbdX = tag('kbd')
+                    kbdX.className = 'key'
+
+                    kbdX.appendChild(spanX)
+                    kbdX.appendChild(buttonX)
+                    kbdX.appendChild(imgX)
+                    divX.appendChild(kbdX)
+                }
+
+            }
+        }
+        function listenToUser(hash) {
+            document.onkeypress = function (pressX) {
+                var key = pressX['key']  // q w e
+                var website = hash[key]
+                // 模拟用户地址栏输入 website
+                // location.href = 'http://'+website
+                window.open('http://' + website, '_blank') // 模拟用户在新窗口打开website
+            }
+        }
+
+    </script>
+</body>
+
+</html>

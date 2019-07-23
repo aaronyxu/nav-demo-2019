@@ -15,22 +15,22 @@
     </main>
     <footer></footer>
     <script>
-        // 1. 初始化数据
+        // 1. Data initialization
         var hashA = init()
         var keys = hashA.keys
         var hash = hashA.hash
 
-        // 2. 生成键盘
+        // 2. Keyboard generation
         // 遍历 keys，生成kbd标签
         generateKeyborad(keys, hash)
 
-        // 3. 监听用户动作
+        // 3. Listen to user actions
         listenToUser(hash)
 
 
 
 
-        // 工具函数
+        // utility functions
         function getFromLocalStorage(name) {
             return JSON.parse(localStorage.getItem(name) || 'null')
         }
@@ -124,7 +124,7 @@
 
                 mainX.appendChild(divX)
 
-                var row = keys[index]   // 第一个数组， 第二个数组， 第三个数组
+                var row = keys[index]   
                 for (var index2 = 0; index2 < row['length']; index2 = index2 + 1) {
                     var spanX = createSpan(row[index2])
 
